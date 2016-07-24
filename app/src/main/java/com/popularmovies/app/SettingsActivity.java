@@ -32,6 +32,10 @@ public class SettingsActivity extends PreferenceActivity {
     private static final boolean ALWAYS_SIMPLE_PREFS = false;
 
     @Override
+    protected boolean isValidFragment (String fragmentName) {
+        return GeneralPreferenceFragment.class.getName().equals(fragmentName);
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setupActionBar();
@@ -228,14 +232,17 @@ public class SettingsActivity extends PreferenceActivity {
 
     private static void bindPreferenceSummaryToValue(Preference preference) {
         // Set the listener to watch for value changes.
-        preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
 
-        // Trigger the listener immediately with the preference's
-        // current value.
-        sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
-                PreferenceManager
-                        .getDefaultSharedPreferences(preference.getContext())
-                        .getString(preference.getKey(), ""));
+        if(preference != null) {
+            preference.setOnPreferenceChangeListener(sBindPreferenceSummaryToValueListener);
+
+            // Trigger the listener immediately with the preference's
+            // current value.
+            sBindPreferenceSummaryToValueListener.onPreferenceChange(preference,
+                    PreferenceManager
+                            .getDefaultSharedPreferences(preference.getContext())
+                            .getString(preference.getKey(), ""));
+        }
     }
 
 
